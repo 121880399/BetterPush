@@ -3,6 +3,9 @@ package org.zzy.libpush.impl.vivo;
 import android.app.Activity;
 import android.app.Application;
 
+import com.vivo.push.IPushActionListener;
+import com.vivo.push.PushClient;
+
 import org.zzy.libpush.IBetterPushProcess;
 
 /**
@@ -12,7 +15,7 @@ import org.zzy.libpush.IBetterPushProcess;
 public class BetterVivoPush implements IBetterPushProcess {
     @Override
     public void pushInit(Application application) {
-
+        PushClient.getInstance(application).initialize();
     }
 
     @Override
@@ -27,7 +30,12 @@ public class BetterVivoPush implements IBetterPushProcess {
 
     @Override
     public void getPushToken(Activity activity) {
-
+        PushClient.getInstance(activity.getApplicationContext()).turnOnPush(new IPushActionListener() {
+            @Override
+            public void onStateChanged(int state) {
+                // TODO: 开关状态处理
+            }
+        });
     }
 
     @Override

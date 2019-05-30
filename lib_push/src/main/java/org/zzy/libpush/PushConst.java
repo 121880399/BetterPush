@@ -15,6 +15,8 @@ public class PushConst {
 
     private static final String PUSH_APP_CODE = "push_app_code";
 
+    private static final String PUSH_PHONE_INFO = "phone_info";
+
     private static Context context;
 
     private static SharedPreferences sp;
@@ -36,6 +38,20 @@ public class PushConst {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(PUSH_APP_CODE, appCode);
         editor.apply();
+    }
+
+    public static void setPhone(String phone) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(PUSH_PHONE_INFO, phone);
+        editor.apply();
+    }
+
+    public static String getPhone() {
+        return sp.getString(PUSH_PHONE_INFO, "");
+    }
+
+    public static String getHost() {
+        return sp.getString(PUSH_HOST, "");
     }
 
 }

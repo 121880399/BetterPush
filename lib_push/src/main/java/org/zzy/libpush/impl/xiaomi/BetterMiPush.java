@@ -3,6 +3,8 @@ package org.zzy.libpush.impl.xiaomi;
 import android.app.Activity;
 import android.app.Application;
 
+import com.xiaomi.mipush.sdk.MiPushClient;
+
 import org.zzy.libpush.IBetterPushProcess;
 
 /**
@@ -10,9 +12,14 @@ import org.zzy.libpush.IBetterPushProcess;
  * @创建日期 2019/5/6
  */
 public class BetterMiPush implements IBetterPushProcess {
+
+    private String pushAppId;
+
+    private String pushAppKey;
+
     @Override
     public void pushInit(Application application) {
-
+        MiPushClient.registerPush(application, pushAppId.trim(), pushAppKey.trim());
     }
 
     @Override

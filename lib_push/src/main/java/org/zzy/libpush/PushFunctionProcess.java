@@ -91,4 +91,8 @@ public class PushFunctionProcess {
         }
         return mIBetterPushProcess;
     }
+
+    public int getPhoneTypeInt () {
+        return phoneTypeInt;
+    }
 }
