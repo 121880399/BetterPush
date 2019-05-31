@@ -61,7 +61,8 @@ public class BetterOppoPush implements IBetterPushProcess {
                     if (code == 0) {
                         if(isFirstGetPushToken && !TextUtils.isEmpty(s)) {
                             isFirstGetPushToken = false;
-                            SyncManager.getInstance(activity.getApplicationContext()).syncPushDeviceInfo(PushFunctionProcess.PHONE_TYPE_OPPO);
+                            SyncManager.getInstance(activity.getApplicationContext()).syncPushDeviceInfo
+                                    (s,PushFunctionProcess.PHONE_TYPE_OPPO);
                         }
                     }
                 }

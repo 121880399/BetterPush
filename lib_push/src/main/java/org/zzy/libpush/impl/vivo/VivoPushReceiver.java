@@ -32,7 +32,7 @@ public class VivoPushReceiver  extends BasePushMessageReceiver {
             pushInfo.setAction(map.get("action"));
             pushInfo.setReceiveMills(System.currentTimeMillis());
             pushInfo.setChannel(PushFunctionProcess.PHONE_TYPE_VIVO);
-            pushInfo.setIntoMC("1".equals(map.get("isIntoPsnCenter")));
+            pushInfo.setIsIntoMC(Integer.valueOf(map.get("isIntoPsnCenter")));
             pushInfo.setExtraMsg(map.get("extraMsg"));
 
             PushNotifyUtils.notifyClickBroadcast(context, pushInfo);
@@ -46,7 +46,7 @@ public class VivoPushReceiver  extends BasePushMessageReceiver {
             PushInfoCreateSync.createPushInfoSync(context, upsNotificationMessage.getTitle(),
                     upsNotificationMessage.getContent()
                     , map.get("messageId"), map.get("action"), PushFunctionProcess.PHONE_TYPE_VIVO, map.get
-                            ("extraMsg"), "1".equals(map.get("isIntoPsnCenter")));
+                            ("extraMsg"),map.get("isIntoPsnCenter"));
         }
         return false;
     }
@@ -55,7 +55,7 @@ public class VivoPushReceiver  extends BasePushMessageReceiver {
     public void onReceiveRegId(Context context, String s) {
         if(isFirstGetPushToken && !TextUtils.isEmpty(s)) {
             isFirstGetPushToken = false;
-            SyncManager.getInstance(context).syncPushDeviceInfo(PushFunctionProcess.PHONE_TYPE_VIVO);
+            SyncManager.getInstance(context).syncPushDeviceInfo(s,PushFunctionProcess.PHONE_TYPE_VIVO);
         }
     }
 }

@@ -17,6 +17,8 @@ public class PushConst {
 
     private static final String PUSH_PHONE_INFO = "phone_info";
 
+    private static final String PUSH_IN_APP_NOT_NOTIFY = "in_app_not_notify";
+
     private static Context context;
 
     private static SharedPreferences sp;
@@ -52,6 +54,16 @@ public class PushConst {
 
     public static String getHost() {
         return sp.getString(PUSH_HOST, "");
+    }
+
+    public static boolean getInAppNotNotify(){
+        return sp.getBoolean(PUSH_IN_APP_NOT_NOTIFY,false);
+    }
+
+    public static void setInAppNotNotify(boolean notNotify){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(PUSH_IN_APP_NOT_NOTIFY,notNotify);
+        editor.apply();
     }
 
 }

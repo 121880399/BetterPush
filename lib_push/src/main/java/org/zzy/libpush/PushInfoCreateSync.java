@@ -13,14 +13,14 @@ public class PushInfoCreateSync {
 
 
     public static void createPushInfoSync (Context context, String title, String msg, String msgId, String action,
-            int channel, String extraMsg, boolean isIntoPsnCenter) {
+            int channel, String extraMsg, String isIntoPsnCenter) {
         PushInfo pushInfo = createPushInfo(title, msg, msgId, action, channel, extraMsg, isIntoPsnCenter);
         PushNotifyUtils.notifyBroadcast(context, pushInfo);
 
     }
 
     private static PushInfo createPushInfo (String title, String msg, String msgId, String action, int
-            channel, String extraMsg, boolean isIntoPsnCenter) {
+            channel, String extraMsg, String isIntoPsnCenter) {
         PushInfo pushInfo = new PushInfo();
         pushInfo.setMessage(msg);
         pushInfo.setTitle(title);
@@ -28,7 +28,7 @@ public class PushInfoCreateSync {
         pushInfo.setAction(action);
         pushInfo.setReceiveMills(System.currentTimeMillis());
         pushInfo.setChannel(channel);
-        pushInfo.setIntoMC(isIntoPsnCenter);
+        pushInfo.setIsIntoMC(Integer.valueOf(isIntoPsnCenter));
         pushInfo.setExtraMsg(extraMsg);
         return pushInfo;
     }

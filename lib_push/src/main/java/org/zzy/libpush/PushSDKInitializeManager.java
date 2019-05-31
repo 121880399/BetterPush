@@ -39,7 +39,7 @@ public class PushSDKInitializeManager {
             mIBetterPushProcess = PushFunctionProcess.getInstance().getIBetterPushProcess();
         }
         mIBetterPushProcess.pushInit(mApplication);
-        SyncManager.getInstance(mApplication).syncPushDeviceInfo(PushFunctionProcess
+        SyncManager.getInstance(mApplication).syncPushDeviceInfo("",PushFunctionProcess
                 .getInstance()
                 .getPhoneTypeInt());
     }

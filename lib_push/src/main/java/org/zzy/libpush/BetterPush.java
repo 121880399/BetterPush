@@ -40,4 +40,11 @@ public class BetterPush {
         PushSDKInitializeManager manager = PushSDKInitializeManager.getInstance(app);
         manager.initialize();
     }
+
+    /**
+     * 设置应用在前台取消通知(只适用个推)
+     */
+    public static void setInAppNotNorify(boolean inAppNotNorify){
+        PushConst.setInAppNotNotify(inAppNotNorify);
+    }
 }

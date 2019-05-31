@@ -65,7 +65,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver{
         if (map != null) {
             PushInfoCreateSync.createPushInfoSync(context, miPushMessage.getTitle(), miPushMessage.getDescription()
                     , map.get("messageId"), map.get("action"), PushFunctionProcess.PHONE_TYPE_XIAOMI, map.get
-                            ("extraMsg"), "1".equals(map.get("isIntoPsnCenter")));
+                            ("extraMsg"), map.get("isIntoPsnCenter"));
         }
     }
 
@@ -88,7 +88,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver{
             pushInfo.setAction(map.get("action"));
             pushInfo.setReceiveMills(System.currentTimeMillis());
             pushInfo.setChannel(PushFunctionProcess.PHONE_TYPE_XIAOMI);
-            pushInfo.setIntoMC("1".equals(map.get("isIntoPsnCenter")));
+            pushInfo.setIsIntoMC(Integer.valueOf(map.get("isIntoPsnCenter")));
             pushInfo.setExtraMsg(map.get("extraMsg"));
             PushNotifyUtils.notifyClickBroadcast(context, pushInfo);
         }
@@ -109,7 +109,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver{
         if (map != null) {
             PushInfoCreateSync.createPushInfoSync(context, miPushMessage.getTitle(), miPushMessage.getDescription()
                     , map.get("messageId"), map.get("action"), PushFunctionProcess.PHONE_TYPE_XIAOMI, map.get
-                            ("extraMsg"), "1".equals(map.get("isIntoPsnCenter")));
+                            ("extraMsg"), map.get("isIntoPsnCenter"));
         }
     }
 
@@ -128,7 +128,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver{
                 String cmdArg1 = ((arguments != null && arguments.size() > 0) ? arguments.get(0) : null);
                 if (isFirstGetPushToken && !TextUtils.isEmpty(cmdArg1)) {
                     isFirstGetPushToken = false;
-                    SyncManager.getInstance(context).syncPushDeviceInfo(PushFunctionProcess
+                    SyncManager.getInstance(context).syncPushDeviceInfo(cmdArg1,PushFunctionProcess
                             .PHONE_TYPE_XIAOMI);
                 }
             }

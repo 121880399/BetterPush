@@ -69,8 +69,9 @@ public class SyncManager {
     /**
      * 设备信息上报到服务器
      * @param channel 推送渠道
+     * @param deviceToken 推送服务商返回的token
      */
-    public void syncPushDeviceInfo(int channel){
+    public void syncPushDeviceInfo(String deviceToken,int channel){
         FormBody.Builder bodyBuilder = new FormBody.Builder();
         //设备型号
         bodyBuilder.add("deviceType", PhoneInfoUtil.getBrand() + PhoneInfoUtil.getModel());
@@ -88,6 +89,8 @@ public class SyncManager {
         bodyBuilder.add("appVersion", ManifestMetaDataUtil.getVersionName(mContext));
         //设备号 苹果：idfa ； 安卓：imei
         bodyBuilder.add("devicecode", PhoneInfoUtil.getRawDeviceId(mContext));
+        //推送服务商返回的token,后台要推送消息时，会把这个token发送给推送服务商，服务商根据这个token找到要推送的用户
+        bodyBuilder.add("deviceToken", deviceToken);
         //表示用户打开了通知，0表示用户关闭了通知
         bodyBuilder.add("isAcceptPush", PhoneInfoUtil.isOpenNotification(mContext));
         //得到接口地址

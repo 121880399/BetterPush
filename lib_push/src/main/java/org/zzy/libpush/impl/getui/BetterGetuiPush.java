@@ -2,6 +2,9 @@ package org.zzy.libpush.impl.getui;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
+
+import com.igexin.sdk.PushManager;
 
 import org.zzy.libpush.IBetterPushProcess;
 
@@ -12,12 +15,11 @@ import org.zzy.libpush.IBetterPushProcess;
 public class BetterGetuiPush implements IBetterPushProcess {
     @Override
     public void pushInit(Application application) {
-
     }
 
     @Override
     public void pushConnect(Activity activity) {
-
+        init(activity);
     }
 
     @Override
@@ -27,7 +29,7 @@ public class BetterGetuiPush implements IBetterPushProcess {
 
     @Override
     public void getPushToken(Activity activity) {
-
+        init(activity);
     }
 
     @Override
@@ -38,5 +40,11 @@ public class BetterGetuiPush implements IBetterPushProcess {
     @Override
     public void getPushStatus() {
 
+    }
+
+    private void init (Activity activity) {
+        Log.i(TAG, "初始化个推推送");
+        PushManager.getInstance().initialize(activity.getApplicationContext(), GeTuiPushService.class);
+        PushManager.getInstance().registerPushIntentService(activity.getApplicationContext(), GetuiIntentService.class);
     }
 }

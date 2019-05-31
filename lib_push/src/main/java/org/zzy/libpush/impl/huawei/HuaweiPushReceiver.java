@@ -13,21 +13,25 @@ package org.zzy.libpush.impl.huawei;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.huawei.hms.support.api.push.PushReceiver;
 
 import org.json.JSONException;
 import org.zzy.libpush.PushFunctionProcess;
-import org.zzy.libpush.PushInfoCreateSync;
+import org.zzy.libpush.SyncManager;
 import org.zzy.libpush.entity.PushInfo;
 import org.zzy.libpush.utils.JsonUtils;
+import org.zzy.libpush.utils.PushNotifyUtils;
 
 /**
  * @作者 ZhouZhengyi
  * @创建日期 2019/5/30
  */
 public class HuaweiPushReceiver extends PushReceiver {
+
+    private static final String TAG = "HuaweiPushReceiver";
 
     public static String huaweiToken = "";
 
@@ -57,14 +61,12 @@ public class HuaweiPushReceiver extends PushReceiver {
             if(msgList!=null && msgList.length > 0){
                 String msg = msgList[0];
                 PushInfo pushInfo = JsonUtils.fromJson(msg, PushInfo.class);
-                PushInfoCreateSync
-                        .createPushInfoSync(context, pushInfo.getTitle(), pushInfo.getMessage(), pushInfo
-                        .getMessageId(), pushInfo.getAction(), PushFunctionProcess.PHONE_TYPE_HUAWEI, "", true);
+                PushNotifyUtils.notifyBroadcast(context, pushInfo);
             }else {
-                Log.e("", "exception");
+                Log.e(TAG, "exception");
             }
         } catch (JSONException e) {
-            Log.e("", "exception"+e.getMessage());
+            Log.e(TAG, "exception"+e.getMessage());
             e.printStackTrace();
         }
     }
@@ -72,15 +74,40 @@ public class HuaweiPushReceiver extends PushReceiver {
     @Override
     public void onToken(Context context, String token, Bundle extras) {
         super.onToken(context, token, extras);
+        huaweiToken = token;
+        if(isFirstGetPushToken && !TextUtils.isEmpty(token)) {
+            isFirstGetPushToken = false;
+            SyncManager.getInstance(context).syncPushDeviceInfo(token,PushFunctionProcess.PHONE_TYPE_HUAWEI);
+        }
     }
 
+    /**
+     *  推送“透传消息”下来时会自动调用onPushMsg方法实现应用透传消息的业务处理
+     */
     @Override
-    public boolean onPushMsg(Context context, byte[] msgBytes, Bundle extras) {
-        return super.onPushMsg(context, msgBytes, extras);
+    public boolean onPushMsg(Context context, byte[] msg, Bundle extras) {
+        try {
+            //CP可以自己解析消息内容，然后做相应的处理
+            String content = new String(msg, "UTF-8");
+            Log.e(TAG, "收到PUSH透传消息,消息内容为:" + content);
+            try {
+                PushInfo pushInfo = JsonUtils.fromJson(content, PushInfo.class);
+                PushNotifyUtils.notifyBroadcast(context, pushInfo);
+            } catch (Exception e) {
+                Log.e(TAG, "exception");
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "exception"+e.getMessage());
+            e.printStackTrace();
+
+        }
+        return false;
     }
 
     @Override
     public void onPushState(Context context, boolean pushState) {
         super.onPushState(context, pushState);
+        Log.e("TAG", "Push连接状态为:" + pushState);
     }
 }
